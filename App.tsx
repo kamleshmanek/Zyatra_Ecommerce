@@ -1,45 +1,36 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+import { StyleSheet } from 'react-native';
+import React, { useEffect } from 'react';
+import MainNavigation from './src/navigation/MainNavigation';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { Colors } from './src/theme/Colors';
+import { Provider } from 'react-redux';
+import { store } from './src/redux/store';
+import { fetchMultipleCategories,fetchBrands } from './src/redux/slice/homeSlice';
+import { TopCategoryCategories } from './src/redux/slice/CatgeorySlice';
 
-import { NewAppScreen } from '@react-native/new-app-screen';
-import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
-import {
-  SafeAreaProvider,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
-
-function App() {
-  const isDarkMode = useColorScheme() === 'dark';
+const AppContent = () => {
+  useEffect(() => {
+    store.dispatch(fetchMultipleCategories());
+    store.dispatch(fetchBrands());
+    store.dispatch(TopCategoryCategories());
+  }, []);
 
   return (
     <SafeAreaProvider>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <AppContent />
+      <SafeAreaView style={{ flex: 1, backgroundColor: Colors.White }}>
+        <MainNavigation />
+      </SafeAreaView>
     </SafeAreaProvider>
   );
-}
+};
 
-function AppContent() {
-  const safeAreaInsets = useSafeAreaInsets();
-
+const App = () => {
   return (
-    <View style={styles.container}>
-      <NewAppScreen
-        templateFileName="App.tsx"
-        safeAreaInsets={safeAreaInsets}
-      />
-    </View>
+    <Provider store={store}>
+      <AppContent />
+    </Provider>
   );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
+};
 
 export default App;
+
