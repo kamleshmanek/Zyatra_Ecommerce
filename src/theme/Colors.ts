@@ -6,6 +6,7 @@ export const Colors = {
   Gray:"gray",
   Red:'red',
   BackgroundGray:'#f2f0f0ff',
-  Green:"green"
+  Green:"green",
+  Amber:"#FFB300FF"
 };
 

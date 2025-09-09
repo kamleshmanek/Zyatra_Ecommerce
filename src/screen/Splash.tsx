@@ -20,7 +20,7 @@ useEffect(() => {
   return (
     <View style={styles.container}>
       <FastImage
-        source={require('../assets/Images/Gif/ZyatraGif.gif')}
+        source={require('../assets/Images/Gif/Zyatra.gif')}
         style={styles.gif}
         resizeMode={FastImage.resizeMode.contain}
       />

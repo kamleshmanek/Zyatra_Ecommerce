@@ -7,6 +7,7 @@ import BottomNavigation from './BottomNavigation';
 import Splash from '../screen/Splash';
 import Collection from '../screen/Collection';
 import Product from '../screen/Product';
+import Cart from '../screen/Cart';
 
 const MainNavigation = () => {
   const Stack = createNativeStackNavigator();
@@ -17,6 +18,7 @@ const MainNavigation = () => {
         <Stack.Screen name="BottomNavigation" component={BottomNavigation} />
         <Stack.Screen name="Collection" component={Collection} />
         <Stack.Screen name="Product" component={Product} />
+        <Stack.Screen name="Cart" component={Cart} />
       </Stack.Navigator>
     </NavigationContainer>
   )

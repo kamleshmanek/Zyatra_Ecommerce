@@ -1,0 +1,22 @@
+export const Txt ={
+ViewAll:"View All",
+ProductOverview:"Product Overview",
+Description:"Description",
+SKU:"SKU",
+Weight:"Weight",
+KG:"KG",
+Warranty:"Warranty",
+ShippingInfo:"Shipping Info.",
+Category:"Category",
+Review:"Review",
+ AddtoCart:" Add to Cart",
+ MRPinclofalltaxes:"MRP incl.of all taxes",
+ Apply:"Apply",
+ Filter:"Filter",
+ ApplyFilter:"Apply Filter",
+ SortBy:"Sort By",
+ Sort:"Sort",
+ Noresultsfor:"No results for",
+  TopProduct:" Top Product"
+
+}

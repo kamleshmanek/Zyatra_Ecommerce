@@ -17,6 +17,7 @@ import { GetCollectionApi } from '../redux/slice/CollectionSlice';
 import { useNavigation } from '@react-navigation/native';
 import { GetSearchApi } from '../redux/slice/SearchSlice';
 import ProductCard from '../component/ProductCard';
+import { Txt } from '../assets/Txt';
 
 const CARD_MARGIN = scale(10);
 const Search = () => {
@@ -114,13 +115,13 @@ const Search = () => {
               size={moderateScale(40)}
               color={Colors.Black}
             />
-            <Text style={styles.resultText}>No results for "{query}"</Text>
+            <Text style={styles.resultText}>{Txt?.Noresultsfor} "{query}"</Text>
           </View>
         )}
 
       {query?.length != 0 && SearchData?.products?.length && (
         <Text style={[styles.TitleTop, { paddingHorizontal: CARD_MARGIN }]}>
-          Top Product
+          {Txt?.TopProduct}
         </Text>
       )}
       {query?.length != 0 && SearchData?.products?.length && (

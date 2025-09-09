@@ -19,6 +19,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import CustomCarousel from '../component/CustomCarouse';
 import Loader from '../component/Loader';
 import Header from '../component/Header';
+import { Txt } from '../assets/Txt';
 
 const Product = () => {
   const routeq: any = useRoute();
@@ -37,14 +38,11 @@ const Product = () => {
     dispatch(GetProductApi(productId));
   }, [productId]);
 
-  if (ProductLoading) {
-    return <Loader visible />;
-  }
-
-  if (!ProductData) return null;
+  // if (!ProductData) return null;
 
   return (
     <View style={styles.container}>
+      <Loader visible={ProductLoading}></Loader>
       <Header showBack />
       <ScrollView showsVerticalScrollIndicator={false}>
         <CustomCarousel
@@ -66,7 +64,6 @@ const Product = () => {
           }}
         />
 
-        {/* Thumbnails */}
         <FlatList
           data={ProductData.images}
           horizontal
@@ -77,8 +74,6 @@ const Product = () => {
             <TouchableOpacity
               onPress={() => {
                 carouselRef.current?.scrollToIndex(index);
-                // carouselRef.current?.scrollToIndex?.({ index, animated: true });
-                // setActiveIndex(index);
               }}
             >
               <FastImage
@@ -112,7 +107,7 @@ const Product = () => {
             <Text style={styles.price}>
               ₹{ProductData.price}{' '}
               <Text style={{ color: Colors.Gray, fontSize: moderateScale(12) }}>
-                MRP incl.of all taxes
+                {Txt?.MRPinclofalltaxes}
               </Text>
             </Text>
           </View>
@@ -122,7 +117,7 @@ const Product = () => {
             onPress={() => setShowProductOverview(!showProductOverview)}
             activeOpacity={0.8}
           >
-            <Text style={styles.titleOverview}>Product Overview</Text>
+            <Text style={styles.titleOverview}>{Txt?.ProductOverview}</Text>
             <Entypo
               name={
                 showProductOverview ? 'chevron-small-down' : 'chevron-small-up'
@@ -133,41 +128,55 @@ const Product = () => {
           </TouchableOpacity>
           {showProductOverview && (
             <View style={styles.backgroundView}>
-              <View style={styles.commanbodyContainer}>
-                <Text style={styles.sectionHeader}>Description :</Text>
-                <Text style={styles.description}>
-                  {ProductData?.description}
-                </Text>
-              </View>
-              <View style={styles.bodyContainer}>
-                <Text style={styles.sectionHeader}>SKU :</Text>
-                <Text style={[styles.description, styles.herderDiscription]}>
-                  {ProductData?.sku}
-                </Text>
-              </View>
-              <View style={styles.bodyContainer}>
-                <Text style={styles.sectionHeader}>Weight :</Text>
-                <Text style={[styles.description, styles.herderDiscription]}>
-                  {ProductData?.weight} KG
-                </Text>
-              </View>
-              <View style={styles.bodyContainer}>
-                <Text style={styles.sectionHeader}>Warranty :</Text>
-                <Text style={[styles.description, styles.herderDiscription]}>
-                  {ProductData?.warrantyInformation}
-                </Text>
-              </View>
+              {ProductData?.description && (
+                <View style={styles.commanbodyContainer}>
+                  <Text style={styles.sectionHeader}>{Txt?.Description} :</Text>
+                  <Text style={styles.description}>
+                    {ProductData?.description}
+                  </Text>
+                </View>
+              )}
+              {ProductData?.sku && (
+                <View style={styles.bodyContainer}>
+                  <Text style={styles.sectionHeader}>{Txt?.SKU} :</Text>
+                  <Text style={[styles.description, styles.herderDiscription]}>
+                    {ProductData?.sku}
+                  </Text>
+                </View>
+              )}
 
-              <View style={styles.commanbodyContainer}>
-                <Text style={styles.sectionHeader}>Shipping Info. :</Text>
-                <Text style={styles.description}>
-                  {ProductData?.shippingInformation}
-                </Text>
-              </View>
-              <View style={styles.commanbodyContainer}>
-                <Text style={styles.sectionHeader}>Category :</Text>
-                <Text style={styles.description}>{ProductData?.category}</Text>
-              </View>
+              {ProductData?.weight && (
+                <View style={styles.bodyContainer}>
+                  <Text style={styles.sectionHeader}>{Txt?.Weight} :</Text>
+                  <Text style={[styles.description, styles.herderDiscription]}>
+                    {ProductData?.weight} {Txt?.KG}
+                  </Text>
+                </View>
+              )}
+              {ProductData?.warrantyInformation && (
+                <View style={styles.bodyContainer}>
+                  <Text style={styles.sectionHeader}>{Txt?.Warranty} :</Text>
+                  <Text style={[styles.description, styles.herderDiscription]}>
+                    {ProductData?.warrantyInformation}
+                  </Text>
+                </View>
+              )}
+              {ProductData?.shippingInformation && (
+                <View style={styles.commanbodyContainer}>
+                  <Text style={styles.sectionHeader}>{Txt?.ShippingInfo}:</Text>
+                  <Text style={styles.description}>
+                    {ProductData?.shippingInformation}
+                  </Text>
+                </View>
+              )}
+              {ProductData?.category && (
+                <View style={styles.commanbodyContainer}>
+                  <Text style={styles.sectionHeader}>{Txt?.Category} :</Text>
+                  <Text style={styles.description}>
+                    {ProductData?.category}
+                  </Text>
+                </View>
+              )}
             </View>
           )}
 
@@ -178,13 +187,31 @@ const Product = () => {
           >
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={styles.titleOverview}>Review</Text>
+                <Text style={styles.titleOverview}>{Txt?.Review}</Text>
 
-                <View style={styles.ReviewTextContainer}>
-                  <Text style={{ color: Colors.White, marginRight: 4 }}>
-                    {ProductData.rating.toFixed(1)}
-                  </Text>
-                  <Entypo name="star" size={16} color={Colors.White} />
+                <View
+                  style={[
+                    styles.ReviewTextContainer,
+                    {
+                      backgroundColor:
+                        ProductData.rating > 2 ? Colors?.Green : Colors?.Amber,
+                    },
+                  ]}
+                >
+                  {ProductData?.rating && (
+                    <Text
+                      style={{
+                        color: Colors.White,
+                        marginRight: 4,
+                        fontFamily: Fonts.Robotomedium,
+                        fontSize: moderateScale(13),
+                      }}
+                    >
+                      {ProductData?.rating?.toFixed(1)}
+                    </Text>
+                  )}
+
+                  <Entypo name="star" size={13} color={Colors.White} />
                 </View>
               </View>
             </View>
@@ -198,7 +225,7 @@ const Product = () => {
           {showReviews && (
             <View style={styles.backgroundView}>
               <FlatList
-                data={ProductData.reviews}
+                data={ProductData?.reviews}
                 keyExtractor={(_, index) => 'review-' + index}
                 renderItem={({ item }) => (
                   <View style={styles.reviewCard}>
@@ -207,95 +234,49 @@ const Product = () => {
                         style={{ flexDirection: 'row', alignItems: 'center' }}
                       >
                         <Feather name="user" size={20} color={Colors.Gray} />
-                        <Text style={styles.reviewer}>{item.reviewerName}</Text>
-
-                        <View style={[styles.ReviewTextContainer,{
-                            backgroundColor:item.rating > 2 ? Colors.Green : '#ffb300ff',
-                        }]}>
-                          <Text
+                        {/* <Text style={styles.reviewer}>{item.reviewerName}</Text> */}
+                        {item?.reviewerName && (
+                          <Text style={styles.reviewer}>
+                            {item?.reviewerName}
+                          </Text>
+                        )}
+                        {item.rating && (
+                          <View
                             style={[
-                              styles.GreenReviewTxt,
-                             
+                              styles.ReviewTextContainer,
+                              {
+                                backgroundColor:
+                                  item.rating > 2 ? Colors.Green : Colors.Amber,
+                              },
                             ]}
                           >
-                            {item.rating.toFixed(1)}
-                          </Text>
-                          <Entypo name="star" size={13} color={Colors.White} />
-                        </View>
+                            <Text style={[styles.GreenReviewTxt]}>
+                              {item.rating.toFixed(1)}
+                            </Text>
+                            <Entypo
+                              name="star"
+                              size={13}
+                              color={Colors.White}
+                            />
+                          </View>
+                        )}
                       </View>
                     </View>
-                    <Text style={styles.reviewComment}>{item.comment}</Text>
+                    {item?.comment && (
+                      <Text style={styles.reviewComment}>{item?.comment}</Text>
+                    )}
                   </View>
                 )}
                 scrollEnabled={false}
               />
             </View>
           )}
-
-          {/* <Text style={styles.sectionHeader}>Description</Text>
-          <Text style={styles.description}>{ProductData.description}</Text>
-
-        
-          <Text style={styles.sectionHeader}>Product Information</Text>
-          <Text style={styles.info}>
-            Warranty: {ProductData.warrantyInformation}
-          </Text>
-          <Text style={styles.info}>
-            Shipping: {ProductData.shippingInformation}
-          </Text>
-          <Text style={styles.info}>
-            Availability: {ProductData.availabilityStatus}
-          </Text>
-          <Text style={styles.info}>
-            Return Policy: {ProductData.returnPolicy}
-          </Text> */}
-
-          {/* Reviews */}
-          {/* <View style={styles.ratingRow}>
-            <Text style={styles.ratingText}>Reviews</Text>
-            {Array.from({ length: 5 }).map((_, i) => (
-              <Entypo
-                key={i}
-                name={
-                  i < Math.round(ProductData.rating) ? 'star' : 'star-outlined'
-                }
-                size={20}
-                color={i < Math.round(ProductData.rating) ? '#FFD700' : '#ddd'}
-              />
-            ))}
-          </View> */}
-
-          {/* <FlatList
-            data={ProductData.reviews}
-            keyExtractor={(_, index) => 'review-' + index}
-            renderItem={({ item }) => (
-              <View style={styles.reviewCard}>
-                <View style={styles.reviewHeader}>
-                  <Feather name="user" size={20} color={Colors.Gray} />
-                  <Text style={styles.reviewer}>{item.reviewerName}</Text>
-                </View>
-                <View style={styles.reviewRating}>
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <Feather
-                      key={i}
-                      name="star"
-                      size={16}
-                      color={i < item.rating ? '#FFD700' : '#ddd'}
-                    />
-                  ))}
-                </View>
-                <Text style={styles.reviewComment}>{item.comment}</Text>
-              </View>
-            )}
-            scrollEnabled={false}
-          /> */}
         </View>
       </ScrollView>
 
-      {/* Bottom Buttons */}
       <View style={styles.actionRow}>
         <TouchableOpacity style={styles.cartBtn}>
-          <Text style={styles.cartBtnText}>Add to Cart</Text>
+          <Text style={styles.cartBtnText}>{Txt?.AddtoCart}</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -349,7 +330,7 @@ const styles = StyleSheet.create({
     marginTop: verticalScale(8),
   },
   ratingText: {
-    marginHorizontal: 6,
+    marginHorizontal:scale(6),
     fontFamily: Fonts.Robotomedium,
     color: Colors.Black,
     fontSize: moderateScale(14),
@@ -365,7 +346,7 @@ const styles = StyleSheet.create({
     color: Colors.Black,
   },
   discount: {
-    marginLeft: 8,
+    marginLeft:scale(8),
     fontSize: moderateScale(12),
     fontFamily: Fonts.Robotomedium,
     color: Colors.Red,
@@ -391,8 +372,8 @@ const styles = StyleSheet.create({
   },
   reviewCard: {
     backgroundColor: Colors.LightGray + '30',
-    borderRadius: 8,
-    padding: scale(10),
+    borderRadius:moderateScale(8),
+    padding: scale(5),
     marginBottom: verticalScale(10),
   },
   reviewHeader: {
@@ -400,17 +381,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   reviewer: {
-    marginLeft: 8,
+    marginLeft:scale(8),
     fontFamily: Fonts.Robotomedium,
     fontSize: moderateScale(12),
     color: Colors.Gray,
   },
   reviewRating: {
     flexDirection: 'row',
-    marginTop: 4,
+    marginTop:verticalScale(4),
   },
   reviewComment: {
-    marginTop: 4,
+    marginTop:verticalScale(4),
     fontFamily: Fonts.Robotomedium,
     fontSize: moderateScale(12),
     color: Colors.Black,
@@ -464,7 +445,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: moderateScale(10),
     paddingHorizontal: scale(6),
-    paddingVertical: verticalScale(2),
+    paddingVertical: verticalScale(1),
     marginLeft: scale(8),
   },
   GreenReviewTxt: {

@@ -25,6 +25,7 @@ import FastImage from 'react-native-fast-image';
 import Feather from 'react-native-vector-icons/Feather';
 import { useNavigation } from '@react-navigation/native';
 import { GetCollectionApi } from '../redux/slice/CollectionSlice';
+import { Txt } from '../assets/Txt';
 
 const { width } = Dimensions.get('window');
 
@@ -107,8 +108,8 @@ const Home = () => {
                   handleTopCategoryPress(categories?.beauty?.handle)
                 }
               >
-                <Text style={styles.viewAllBtn}>View All</Text>
-                <Feather name="chevron-right" size={18} color={Colors.Gray} />
+                <Text style={styles.viewAllBtn}>{Txt.ViewAll}</Text>
+                <Feather name="chevron-right" size={16} color={Colors.Gray} />
               </TouchableOpacity>
             </View>
 
@@ -155,8 +156,8 @@ const Home = () => {
                   handleTopCategoryPress(categories?.womensbag?.handle)
                 }
               >
-                <Text style={styles.viewAllBtn}>View All</Text>
-                <Feather name="chevron-right" size={18} color={Colors.Gray} />
+                <Text style={styles.viewAllBtn}>{Txt.ViewAll}</Text>
+                <Feather name="chevron-right" size={16} color={Colors.Gray} />
               </TouchableOpacity>
             </View>
 
@@ -213,15 +214,15 @@ const styles = StyleSheet.create({
   },
 
   sectionTitle: {
-    fontSize: moderateScale(18),
+    fontSize: moderateScale(16),
     fontFamily: Fonts.Robotomedium,
     color: Colors.Black,
   },
 
   viewAllBtn: {
     color: Colors.Gray,
-    fontFamily: Fonts.Robotoregular,
-    fontSize: moderateScale(14),
+    fontFamily: Fonts.Robotomedium,
+    fontSize: moderateScale(13),
     marginRight: scale(4),
   },
   viewAllWrapper: {
