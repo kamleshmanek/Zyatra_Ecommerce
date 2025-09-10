@@ -17,6 +17,9 @@ Review:"Review",
  SortBy:"Sort By",
  Sort:"Sort",
  Noresultsfor:"No results for",
-  TopProduct:" Top Product"
+  TopProduct:" Top Product",
+  Checkout:"Check out",
+   SubTotal:"Sub Total",
+   ShoppingBag:"Shopping Bag"
 
 }

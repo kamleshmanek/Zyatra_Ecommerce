@@ -20,6 +20,7 @@ import CustomCarousel from '../component/CustomCarouse';
 import Loader from '../component/Loader';
 import Header from '../component/Header';
 import { Txt } from '../assets/Txt';
+import { addToCart } from '../redux/slice/CartSlice';
 
 const Product = () => {
   const routeq: any = useRoute();
@@ -28,6 +29,7 @@ const Product = () => {
   const { ProductData, ProductLoading } = useSelector(
     (state: any) => state.Product,
   );
+  console.log("ProductData",ProductData)
 
   const carouselRef = useRef<any>(null);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -38,7 +40,9 @@ const Product = () => {
     dispatch(GetProductApi(productId));
   }, [productId]);
 
-  // if (!ProductData) return null;
+ const handleAddToCart = () =>{
+  dispatch(addToCart(ProductData));
+ }
 
   return (
     <View style={styles.container}>
@@ -275,7 +279,7 @@ const Product = () => {
       </ScrollView>
 
       <View style={styles.actionRow}>
-        <TouchableOpacity style={styles.cartBtn}>
+        <TouchableOpacity style={styles.cartBtn} onPress={handleAddToCart}>
           <Text style={styles.cartBtnText}>{Txt?.AddtoCart}</Text>
         </TouchableOpacity>
       </View>
