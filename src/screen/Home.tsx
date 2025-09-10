@@ -55,7 +55,7 @@ const Home = () => {
       >
         <Loader visible={loading || Brandloading} />
 
-        <View style={styles.carouselWrapper}>
+        <View >
           <CustomCarousel
             data={carouselData}
             height={verticalScale(230)}
@@ -230,7 +230,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   carouselWrapper: {
-    // marginTop: verticalScale(10),
+    marginTop: verticalScale(10),
   },
 
   carouselItemContainer: {
