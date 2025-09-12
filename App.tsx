@@ -5,8 +5,12 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { Colors } from './src/theme/Colors';
 import { Provider } from 'react-redux';
 import { store } from './src/redux/store';
-import { fetchMultipleCategories,fetchBrands } from './src/redux/slice/homeSlice';
+import {
+  fetchMultipleCategories,
+  fetchBrands,
+} from './src/redux/slice/homeSlice';
 import { TopCategoryCategories } from './src/redux/slice/CatgeorySlice';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 const AppContent = () => {
   useEffect(() => {
@@ -26,11 +30,12 @@ const AppContent = () => {
 
 const App = () => {
   return (
-    <Provider store={store}>
-      <AppContent />
-    </Provider>
+    <GestureHandlerRootView>
+      <Provider store={store}>
+        <AppContent />
+      </Provider>
+    </GestureHandlerRootView>
   );
 };
 
 export default App;
-

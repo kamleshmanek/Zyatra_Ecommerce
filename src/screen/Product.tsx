@@ -5,6 +5,8 @@ import {
   ScrollView,
   TouchableOpacity,
   FlatList,
+  Animated,
+  Dimensions,
 } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import { useRoute } from '@react-navigation/native';
@@ -42,7 +44,40 @@ const Product = () => {
 
  const handleAddToCart = () =>{
   dispatch(addToCart(ProductData));
+  handleAddToCart2()
  }
+
+   const screenHeight = Dimensions.get("window").height;
+
+   const translateY = useRef(new Animated.Value(50)).current;
+   const translateX = useRef(new Animated.Value(100)).current;    
+  const opacity = useRef(new Animated.Value(0)).current;
+  const [visible, setVisible] = useState(false);
+
+  const handleAddToCart2 = () => {
+    setVisible(true);
+
+    // reset
+    translateY.setValue(screenHeight);
+    translateY.setValue(100);
+    opacity.setValue(0);
+
+    // animate in
+    Animated.parallel([
+      Animated.timing(opacity, {
+        toValue: 1,
+        duration: 300,
+        useNativeDriver: true,
+      }),
+      Animated.timing(translateY, {
+        toValue: 0,
+        duration: 1000,
+        useNativeDriver: true,
+      }),
+    ]).start(() => {
+      setVisible(false);
+    });
+  };
 
   return (
     <View style={styles.container}>
@@ -279,10 +314,24 @@ const Product = () => {
       </ScrollView>
 
       <View style={styles.actionRow}>
+       
         <TouchableOpacity style={styles.cartBtn} onPress={handleAddToCart}>
           <Text style={styles.cartBtnText}>{Txt?.AddtoCart}</Text>
         </TouchableOpacity>
       </View>
+        {visible && (
+        <Animated.View
+          style={[
+            styles.box,
+            {
+              opacity,
+              transform: [{ translateY },{translateX}],
+            },
+          ]}
+        >
+          <Text style={styles.cartBtnTextAnim}>+1</Text>
+        </Animated.View>
+      )}
     </View>
   );
 };
@@ -457,5 +506,18 @@ const styles = StyleSheet.create({
     marginRight: scale(2),
     fontSize: moderateScale(10),
     fontFamily: Fonts.Robotoregular,
+  },
+   box: {
+    width: 20,
+    height: 20,
+    backgroundColor: Colors.Black,
+    borderRadius: 8,
+    position: "absolute", 
+    right:12
+  },
+    cartBtnTextAnim: {
+    fontFamily: Fonts.Robotomedium,
+    fontSize: moderateScale(12),
+    color: Colors.White,
   },
 });
