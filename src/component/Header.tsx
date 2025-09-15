@@ -7,6 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import { Fonts } from '../assets/fonts/Fonts';
 import { moderateScale, scale, verticalScale } from '../theme/dimensions';
+import { isTablet } from '../helper/isTablet';
 
 type HeaderProps = {
   showBack?: boolean;
@@ -22,7 +23,6 @@ const Header: React.FC<HeaderProps> = ({
   const navigation = useNavigation<any>();
   const items  = useSelector((state: any) => state.Cart?.CartData);
   const count = items?.length || 0;
-
 
 const scaleAnim = useRef(new Animated.Value(0)).current; 
 const opacityAnim = useRef(new Animated.Value(0)).current;
@@ -50,7 +50,7 @@ useEffect(() => {
     <View style={styles.container}>
       {showBack ? (
         <TouchableOpacity onPress={handleGoBack}>
-          <Feather name="arrow-left" size={25} color={Colors.Black} />
+          <Feather name="arrow-left" size={isTablet ? 35:25} color={Colors.Black} />
         </TouchableOpacity>
       ) : (
         <View style={{ width:scale(25) }} />
@@ -61,7 +61,7 @@ useEffect(() => {
       {showCart ? (
         <TouchableOpacity onPress={() => navigation.navigate('Cart')}>
           <View>
-            <Feather name="shopping-cart" size={25} color={Colors.Black} />
+            <Feather name="shopping-cart" size={isTablet ? 35:25} color={Colors.Black} />
             {count > 0 && (
               <Animated.View style={[styles.badge, { transform: [{ scale: scaleAnim }] }]}>
                 <Text style={styles.badgeText}>{count >9 ? "9+":count}</Text>

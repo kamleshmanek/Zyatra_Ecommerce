@@ -13,7 +13,7 @@ import { Fonts } from '../assets/fonts/Fonts';
 import { scale, verticalScale, moderateScale } from '../theme/dimensions';
 import Header from '../component/Header';
 import { useDispatch, useSelector } from 'react-redux';
-import { removeFromCart, updateQty } from '../redux/slice/CartSlice';
+import {updateQty } from '../redux/slice/CartSlice';
 import { Txt } from '../assets/Txt';
 import CartItemCard from '../component/CartItemCard';
 import { useNavigation } from '@react-navigation/native';
@@ -21,7 +21,7 @@ import { useNavigation } from '@react-navigation/native';
 const Cart = () => {
   const CartData = useSelector((state: any) => state.Cart?.CartData);
   const dispatch = useDispatch<any>();
-  const navigation = useNavigation<any>()
+  const navigation = useNavigation<any>();
 
   const increaseQty = (item: any) => {
     dispatch(updateQty({ id: item?.id, qty: item?.qty + 1 }));
@@ -30,12 +30,12 @@ const Cart = () => {
     dispatch(updateQty({ id: item?.id, qty: item?.qty - 1 }));
   };
 
-  const handleShopingBtn = () =>{
-     navigation.reset({
-      index: 0, 
+  const handleShopingBtn = () => {
+    navigation.reset({
+      index: 0,
       routes: [{ name: 'BottomNavigation' }],
     });
-  }
+  };
   const subtotal = CartData.reduce((total: any, item: any) => {
     return total + item.price * (item?.qty || 0);
   }, 0);
@@ -45,10 +45,24 @@ const Cart = () => {
       <Header showBack showCart={false} />
       {CartData?.length == 0 && (
         <View
-          style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            paddingHorizontal: scale(32),
+          }}
         >
-          {/* <Text style={styles.shopingBagTxt}>No Product Available</Text> */}
-          <Text onPress={handleShopingBtn} style={styles.shopingBagTxt}>Continue To Shopping</Text>
+          <Feather name="shopping-cart" size={60} color={Colors.LightGray} />
+          <Text style={styles.emptyTitle}>Your Cart is Empty</Text>
+          <Text style={styles.emptyText}>
+            You haven't added anything to your Cart yet
+          </Text>
+          <TouchableOpacity
+            style={styles.continueShoppingButton}
+            onPress={handleShopingBtn}
+          >
+            <Text style={styles.continueShoppingText}>CONTINUE SHOPPING</Text>
+          </TouchableOpacity>
         </View>
       )}
       {CartData?.length > 0 && (
@@ -212,5 +226,31 @@ const styles = StyleSheet.create({
   shopingBagTxt: {
     fontFamily: Fonts.Robotomedium,
     fontSize: moderateScale(14),
+  },
+  continueShoppingButton: {
+    backgroundColor: Colors.Black,
+    paddingHorizontal: scale(30),
+    paddingVertical: verticalScale(12),
+    borderRadius: moderateScale(4),
+  },
+  continueShoppingText: {
+    color: Colors.White,
+    fontSize: moderateScale(14),
+    fontFamily: Fonts.Robotosemibold,
+    letterSpacing: 0.5,
+  },
+  emptyTitle: {
+    fontSize: moderateScale(20),
+    fontFamily: Fonts.Robotosemibold,
+    color: Colors.Black,
+    marginVertical: verticalScale(10),
+    textAlign: 'center',
+  },
+  emptyText: {
+    fontSize: moderateScale(14),
+    fontFamily: Fonts.Robotoregular,
+    color: Colors.Gray,
+    textAlign: 'center',
+    marginBottom: verticalScale(20),
   },
 });

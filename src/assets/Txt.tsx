@@ -20,6 +20,7 @@ Review:"Review",
   TopProduct:" Top Product",
   Checkout:"Check out",
    SubTotal:"Sub Total",
-   ShoppingBag:"Shopping Bag"
+   ShoppingBag:"Shopping Bag",
+   whishlist:"YOUR WHISHLIST ITEM",
 
 }

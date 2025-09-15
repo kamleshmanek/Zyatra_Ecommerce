@@ -1,16 +1,16 @@
-import { StyleSheet } from 'react-native';
 import React, { useEffect } from 'react';
 import MainNavigation from './src/navigation/MainNavigation';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { Colors } from './src/theme/Colors';
 import { Provider } from 'react-redux';
-import { store } from './src/redux/store';
 import {
   fetchMultipleCategories,
   fetchBrands,
 } from './src/redux/slice/homeSlice';
 import { TopCategoryCategories } from './src/redux/slice/CatgeorySlice';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { PersistGate } from 'redux-persist/integration/react';
+import { store, persistor } from './src/redux/store';
 
 const AppContent = () => {
   useEffect(() => {
@@ -32,7 +32,9 @@ const App = () => {
   return (
     <GestureHandlerRootView>
       <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
         <AppContent />
+      </PersistGate>
       </Provider>
     </GestureHandlerRootView>
   );

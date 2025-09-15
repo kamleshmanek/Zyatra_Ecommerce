@@ -8,22 +8,25 @@ import {
   Pressable,
   Dimensions,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from '../component/Header';
 import { Colors } from '../theme/Colors';
 import { Fonts } from '../assets/fonts/Fonts';
 import { scale, verticalScale, moderateScale } from '../theme/dimensions';
 import FastImage from 'react-native-fast-image';
 import Feather from 'react-native-vector-icons/Feather';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import ProductCard from '../component/ProductCard';
 import { Txt } from '../assets/Txt';
+import { addToWishlist } from '../redux/slice/WishlistSlice';
 
 const { width } = Dimensions.get('window');
 const CARD_MARGIN = scale(10);
 const CARD_WIDTH = width / 2 - CARD_MARGIN * 1.3;
 
 const Collection = () => {
+  const dispatch = useDispatch<any>();
+  const wishlistItems = useSelector((state: any) => state.wishlist?.items);
   const [likedItems, setLikedItems] = useState<{ [key: string]: boolean }>({});
   const [sortModalVisible, setSortModalVisible] = useState(false);
   const [filterModalVisible, setFilterModalVisible] = useState(false);
@@ -34,10 +37,20 @@ const Collection = () => {
     (state: any) => state.Collection,
   );
 
-  const toggleLike = (id: string) => {
+  useEffect(() => {
+    wishlistItems?.map((item: any) => {
+      setLikedItems(prev => ({
+        ...prev,
+        [item?.id]: true,
+      }));
+    });
+  }, [wishlistItems]);
+
+  const toggleLike = (item: any) => {
+    dispatch(addToWishlist(item));
     setLikedItems(prev => ({
       ...prev,
-      [id]: !prev[id],
+      [item?.id]: !prev[item?.id],
     }));
   };
 
@@ -104,10 +117,7 @@ const Collection = () => {
           style={styles.modalContainer}
           onPress={() => setSortModalVisible(false)}
         >
-          <Pressable
-            style={styles.modalBox}
-            onPress={e => e.stopPropagation()} 
-          >
+          <Pressable style={styles.modalBox} onPress={e => e.stopPropagation()}>
             <View style={{ padding: 15 }}>
               <Text style={styles.modalTitle}>{Txt?.SortBy}</Text>
               {sortOptions.map(opt => (
@@ -142,10 +152,7 @@ const Collection = () => {
           style={styles.modalContainer}
           onPress={() => setFilterModalVisible(false)}
         >
-          <Pressable
-            style={styles.modalBox}
-            onPress={e => e.stopPropagation()} 
-          >
+          <Pressable style={styles.modalBox} onPress={e => e.stopPropagation()}>
             <Text style={styles.modalTitle}>{Txt?.Filter}</Text>
             {filterOptions.map(opt => (
               <Pressable

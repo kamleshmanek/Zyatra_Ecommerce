@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Home from '../screen/Home';
@@ -8,17 +8,48 @@ import Splash from '../screen/Splash';
 import Collection from '../screen/Collection';
 import Product from '../screen/Product';
 import Cart from '../screen/Cart';
+import Boarding from '../screen/Boarding';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Colors } from '../theme/Colors';
 
 const MainNavigation = () => {
+  const [loading, setLoading] = useState(true);
+  const [firstLaunch, setFirstLaunch] = useState(null);
+  console.log(firstLaunch,"firstLaunchfirstLaunchfirstLaunch")
+
+  useEffect(() => {
+    checkLaunch();
+  }, []);
+  const checkLaunch = async () => {
+    try {
+      const value = await AsyncStorage.getItem('alreadyLaunched');
+      console.log(value,"value-----")
+      if (value === null) {
+        // first launch
+        setFirstLaunch(true);
+        await AsyncStorage.setItem('alreadyLaunched', 'true');
+      } else {
+        setFirstLaunch(false);
+      }
+    } catch (e) {
+      console.log('Error reading AsyncStorage:', e);
+    } finally {
+      setLoading(false);
+    }
+  };
+  if(loading){
+    return<View style={{flex:1,backgroundColor:Colors.White}}></View>
+  }
   const Stack = createNativeStackNavigator();
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Navigator screenOptions={{headerShown: false}} initialRouteName={firstLaunch && !loading?'Boarding':'Splash'}>
         <Stack.Screen name="Splash" component={Splash} />
         <Stack.Screen name="BottomNavigation" component={BottomNavigation} />
         <Stack.Screen name="Collection" component={Collection} />
         <Stack.Screen name="Product" component={Product} />
         <Stack.Screen name="Cart" component={Cart} />
+        <Stack.Screen name="Boarding" component={Boarding} />
       </Stack.Navigator>
     </NavigationContainer>
   )

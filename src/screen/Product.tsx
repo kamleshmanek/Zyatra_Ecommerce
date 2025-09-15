@@ -50,7 +50,7 @@ const Product = () => {
    const screenHeight = Dimensions.get("window").height;
 
    const translateY = useRef(new Animated.Value(50)).current;
-   const translateX = useRef(new Animated.Value(100)).current;    
+   const translateX = useRef(new Animated.Value(0)).current;    
   const opacity = useRef(new Animated.Value(0)).current;
   const [visible, setVisible] = useState(false);
 
@@ -58,8 +58,7 @@ const Product = () => {
     setVisible(true);
 
     // reset
-    translateY.setValue(screenHeight);
-    translateY.setValue(100);
+    translateY.setValue(50);
     opacity.setValue(0);
 
     // animate in
@@ -70,7 +69,7 @@ const Product = () => {
         useNativeDriver: true,
       }),
       Animated.timing(translateY, {
-        toValue: 0,
+        toValue: -50,
         duration: 1000,
         useNativeDriver: true,
       }),
@@ -325,7 +324,7 @@ const Product = () => {
             styles.box,
             {
               opacity,
-              transform: [{ translateY },{translateX}],
+              transform: [{ translateY }],
             },
           ]}
         >

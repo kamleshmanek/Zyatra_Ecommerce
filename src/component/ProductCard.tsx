@@ -22,7 +22,7 @@ const CARD_WIDTH = width / 2 - CARD_MARGIN * 1.3;
 interface ProductCardProps {
   item: any;
   likedItems: { [key: string]: boolean };
-  toggleLike: (id: string) => void;
+  toggleLike: (item: any) => void;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({
@@ -136,7 +136,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
         )}
 
         <TouchableOpacity
-          onPress={() => toggleLike(item.id)}
+          onPress={() => toggleLike(item)}
           style={styles.likeIcon}
         >
           <Entypo
