@@ -10,12 +10,14 @@ import Product from '../screen/Product';
 import Cart from '../screen/Cart';
 import Boarding from '../screen/Boarding';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Colors } from '../theme/Colors';
+import Login from '../screen/Login';
+import { useAppColors } from '../helper/useAppColors';
+import ForgotPassword from '../screen/ForgotPassword';
 
 const MainNavigation = () => {
+  const Colors = useAppColors();
   const [loading, setLoading] = useState(true);
   const [firstLaunch, setFirstLaunch] = useState(null);
-  console.log(firstLaunch,"firstLaunchfirstLaunchfirstLaunch")
 
   useEffect(() => {
     checkLaunch();
@@ -23,7 +25,6 @@ const MainNavigation = () => {
   const checkLaunch = async () => {
     try {
       const value = await AsyncStorage.getItem('alreadyLaunched');
-      console.log(value,"value-----")
       if (value === null) {
         // first launch
         setFirstLaunch(true);
@@ -43,13 +44,18 @@ const MainNavigation = () => {
   const Stack = createNativeStackNavigator();
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{headerShown: false}} initialRouteName={firstLaunch && !loading?'Boarding':'Splash'}>
+      <Stack.Navigator screenOptions={{headerShown: false}} 
+      initialRouteName={"Login"}
+      // initialRouteName={firstLaunch && !loading?'Boarding':'Splash'}
+      >
         <Stack.Screen name="Splash" component={Splash} />
         <Stack.Screen name="BottomNavigation" component={BottomNavigation} />
         <Stack.Screen name="Collection" component={Collection} />
         <Stack.Screen name="Product" component={Product} />
         <Stack.Screen name="Cart" component={Cart} />
         <Stack.Screen name="Boarding" component={Boarding} />
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
       </Stack.Navigator>
     </NavigationContainer>
   )

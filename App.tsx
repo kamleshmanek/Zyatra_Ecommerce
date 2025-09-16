@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import MainNavigation from './src/navigation/MainNavigation';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import { Colors } from './src/theme/Colors';
 import { Provider } from 'react-redux';
+import { useAppColors } from './src/helper/useAppColors';
 import {
   fetchMultipleCategories,
   fetchBrands,
@@ -19,9 +19,11 @@ const AppContent = () => {
     store.dispatch(TopCategoryCategories());
   }, []);
 
+  const colors = useAppColors();
+
   return (
     <SafeAreaProvider>
-      <SafeAreaView style={{ flex: 1, backgroundColor: Colors.White }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: colors.White }}>
         <MainNavigation />
       </SafeAreaView>
     </SafeAreaProvider>

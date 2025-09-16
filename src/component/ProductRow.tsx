@@ -3,6 +3,7 @@ import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { Colors } from '../theme/Colors';
 import { scale, verticalScale } from '../theme/dimensions';
+import { useAppColors } from '../helper/useAppColors';
 
 interface Product {
   id: string | number;
@@ -27,6 +28,8 @@ const ProductRow: React.FC<ProductRowProps> = ({
   borderRadius = scale(8),
   resizeMode = FastImage.resizeMode.cover,
 }) => {
+    const Colors = useAppColors();
+    const styles = useStyles(Colors);
   return (
     <View
       style={[
@@ -60,7 +63,7 @@ const ProductRow: React.FC<ProductRowProps> = ({
 
 export default ProductRow;
 
-const styles = StyleSheet.create({
+const useStyles = (Colors) =>StyleSheet.create({
   row: {
     flexDirection: 'row',
     marginBottom: verticalScale(10),

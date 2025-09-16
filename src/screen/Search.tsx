@@ -7,7 +7,7 @@ import {
   FlatList,
 } from 'react-native';
 import React, { useState, useMemo } from 'react';
-import { Colors } from '../theme/Colors';
+// import { Colors } from '../theme/Colors';
 import Header from '../component/Header';
 import { Fonts } from '../assets/fonts/Fonts';
 import { scale, verticalScale, moderateScale } from '../theme/dimensions';
@@ -18,9 +18,13 @@ import { useNavigation } from '@react-navigation/native';
 import { GetSearchApi } from '../redux/slice/SearchSlice';
 import ProductCard from '../component/ProductCard';
 import { Txt } from '../assets/Txt';
+import { useAppColors } from '../helper/useAppColors';
 
 const CARD_MARGIN = scale(10);
 const Search = () => {
+  const Colors = useAppColors();
+  const styles = useStyles(Colors);
+    
   const dispatch = useDispatch<any>();
   const navigation = useNavigation<any>();
   const [query, setQuery] = useState('');
@@ -145,55 +149,53 @@ const Search = () => {
   );
 };
 
+
+const useStyles = (Colors) =>
+  StyleSheet.create({
+    sectionWrapper: {
+      marginHorizontal: scale(10),
+      marginTop: verticalScale(10),
+    },
+    searchBox: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      borderWidth: 1,
+      borderColor: Colors.Black,
+      borderRadius: scale(10),
+      paddingHorizontal: scale(10),
+      height: verticalScale(43),
+    },
+    searchInput: {
+      flex: 1,
+      fontSize: moderateScale(14),
+      fontFamily: Fonts.Robotomedium,
+      color: Colors.Black,
+    },
+    suggestionWrapper: {
+      marginTop: verticalScale(15),
+    },
+    suggestionItem: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingVertical: verticalScale(8),
+    },
+    suggestionText: {
+      fontSize: moderateScale(14),
+      fontFamily: Fonts.Robotoregular,
+      color: Colors.Black,
+    },
+    resultWrapper: {
+      marginTop: verticalScale(40),
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    resultText: {
+      marginTop: verticalScale(8),
+      fontSize: moderateScale(16),
+      fontFamily: Fonts.Robotomedium,
+      color: Colors.Black,
+    },
+    listContainer: { padding: CARD_MARGIN },
+    TitleTop: { fontSize: moderateScale(16), fontFamily: Fonts.Robotobold ,color:Colors.Black},
+  });
 export default Search;
-
-const styles = StyleSheet.create({
-  sectionWrapper: {
-    marginHorizontal: scale(10),
-    marginTop: verticalScale(10),
-  },
-  searchBox: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: Colors.Black,
-    borderRadius: scale(10),
-    paddingHorizontal: scale(10),
-    height: verticalScale(43),
-  },
-  searchInput: {
-    flex: 1,
-    fontSize: moderateScale(14),
-    fontFamily: Fonts.Robotomedium,
-    color: Colors.Black,
-  },
-  suggestionWrapper: {
-    marginTop: verticalScale(15),
-  },
-  suggestionItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: verticalScale(8),
-    // borderBottomWidth: 0.5,
-    // borderBottomColor: Colors.LightGray,
-  },
-  suggestionText: {
-    fontSize: moderateScale(14),
-    fontFamily: Fonts.Robotoregular,
-    color: Colors.Black,
-  },
-  resultWrapper: {
-    marginTop: verticalScale(40),
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  resultText: {
-    marginTop: verticalScale(8),
-    fontSize: moderateScale(16),
-    fontFamily: Fonts.Robotomedium,
-    color: Colors.Black,
-  },
-
-  listContainer: { padding: CARD_MARGIN },
-  TitleTop: { fontSize: moderateScale(16), fontFamily: Fonts.Robotobold },
-});

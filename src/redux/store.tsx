@@ -8,12 +8,13 @@ import SearchReducer from "./slice/SearchSlice";
 import ProductReducer from "./slice/ProductSlice";
 import CartReducer from "./slice/CartSlice";
 import wishlistReducer from "./slice/WishlistSlice";
+import ThemeReducer from "./slice/ThemeSlice";
 
 // persist config
 const persistConfig = {
   key: "root",
   storage: AsyncStorage, // RN AsyncStorage
-  whitelist: ["Cart", "wishlist"], // only persist these slices
+  whitelist: ["Cart", "wishlist","Theme"], // only persist these slices
 };
 
 // combine reducers
@@ -25,6 +26,7 @@ const rootReducer = combineReducers({
   Product: ProductReducer,
   Cart: CartReducer,
   wishlist: wishlistReducer,
+  Theme:ThemeReducer
 });
 
 // persisted reducer

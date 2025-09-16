@@ -14,6 +14,7 @@ import { Colors } from '../theme/Colors';
 import { scale, moderateScale, verticalScale } from '../theme/dimensions';
 import Entypo from 'react-native-vector-icons/Entypo';
 import { useNavigation } from '@react-navigation/native';
+import { useAppColors } from '../helper/useAppColors';
 
 const { width } = Dimensions.get('window');
 const CARD_MARGIN = scale(10);
@@ -30,6 +31,8 @@ const ProductCard: React.FC<ProductCardProps> = ({
   likedItems,
   toggleLike,
 }) => {
+   const Colors = useAppColors();
+    const styles = getStyles(Colors);
   const [activeIndex, setActiveIndex] = useState(0);
   const navigation = useNavigation<any>();
 
@@ -166,7 +169,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
 export default ProductCard;
 
-const styles = StyleSheet.create({
+const getStyles = (Colors: any) =>StyleSheet.create({
   card: {
     width: CARD_WIDTH,
     backgroundColor: Colors.White,
@@ -186,11 +189,12 @@ const styles = StyleSheet.create({
   cardTitle: {
     fontSize: moderateScale(13),
     fontFamily: Fonts.Robotomedium,
+    color:Colors.Black
   },
   cardPrice: {
     fontSize: moderateScale(12),
     fontFamily: Fonts.Robotoregular,
-    color: Colors.Gray,
+    color: Colors.Black,
   },
   paginationContainer: {
     position: 'absolute',

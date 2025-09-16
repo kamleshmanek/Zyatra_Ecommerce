@@ -23,10 +23,13 @@ import Loader from '../component/Loader';
 import Header from '../component/Header';
 import { Txt } from '../assets/Txt';
 import { addToCart } from '../redux/slice/CartSlice';
+import { useAppColors } from '../helper/useAppColors';
 
 const Product = () => {
   const routeq: any = useRoute();
   const dispatch = useDispatch<any>();
+    const Colors = useAppColors();
+    const styles = useStyles(Colors);
   const { productId } = routeq.params;
   const { ProductData, ProductLoading } = useSelector(
     (state: any) => state.Product,
@@ -337,7 +340,7 @@ const Product = () => {
 
 export default Product;
 
-const styles = StyleSheet.create({
+const useStyles = (Colors) => StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.White,
@@ -423,7 +426,7 @@ const styles = StyleSheet.create({
     color: Colors.Black,
   },
   reviewCard: {
-    backgroundColor: Colors.LightGray + '30',
+    backgroundColor: Colors.white,
     borderRadius:moderateScale(8),
     padding: scale(5),
     marginBottom: verticalScale(10),

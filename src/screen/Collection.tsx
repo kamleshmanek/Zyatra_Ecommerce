@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import Header from '../component/Header';
-import { Colors } from '../theme/Colors';
+import { useAppColors } from '../helper/useAppColors';
 import { Fonts } from '../assets/fonts/Fonts';
 import { scale, verticalScale, moderateScale } from '../theme/dimensions';
 import FastImage from 'react-native-fast-image';
@@ -25,6 +25,8 @@ const CARD_MARGIN = scale(10);
 const CARD_WIDTH = width / 2 - CARD_MARGIN * 1.3;
 
 const Collection = () => {
+  const colors = useAppColors();
+  const styles = getStyles(colors);
   const dispatch = useDispatch<any>();
   const wishlistItems = useSelector((state: any) => state.wishlist?.items);
   const [likedItems, setLikedItems] = useState<{ [key: string]: boolean }>({});
@@ -73,7 +75,7 @@ const Collection = () => {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: Colors.White }}>
+    <View style={{ flex: 1, backgroundColor: colors.White }}>
       <Header showBack />
 
       <View style={styles.actionsRow}>
@@ -85,12 +87,12 @@ const Collection = () => {
         </Text>
         <TouchableOpacity
           onPress={() => setSortModalVisible(true)}
-          style={{ flexDirection: 'row', alignItems: 'center' }}
+          style={styles.sortButton}
         >
           <Feather
             name="arrow-up-down"
             size={moderateScale(16)}
-            color={Colors.Black}
+            color={colors.Black}
           />
           <Text style={[styles.actionText, { marginLeft: 4 }]}>
             {Txt?.Sort}
@@ -129,7 +131,7 @@ const Collection = () => {
                   <Text
                     style={{
                       color:
-                        sortOption === opt.key ? Colors.Black : Colors.Gray,
+                        sortOption === opt.key ? colors.Black : colors.Gray,
                     }}
                   >
                     {opt.label}
@@ -163,8 +165,8 @@ const Collection = () => {
                 <Text
                   style={{
                     color: selectedFilters.includes(opt.key)
-                      ? Colors.Black
-                      : Colors.Gray,
+                      ? colors.Black
+                      : colors.Gray,
                   }}
                 >
                   {opt.label}
@@ -186,9 +188,9 @@ const Collection = () => {
 
 export default Collection;
 
-const styles = StyleSheet.create({
+const getStyles = (colors: any) => StyleSheet.create({
   listContainer: { padding: CARD_MARGIN },
-  TitleTop: { fontSize: moderateScale(16), fontFamily: Fonts.Robotobold },
+  TitleTop: { fontSize: moderateScale(16), fontFamily: Fonts.Robotobold,color:colors.Black },
   actionsRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -198,41 +200,45 @@ const styles = StyleSheet.create({
   actionText: {
     fontSize: moderateScale(14),
     fontFamily: Fonts.Robotomedium,
-    color: Colors.Black,
+    color: colors.Black,
   },
   card: {
     width: CARD_WIDTH,
-    backgroundColor: Colors.White,
+    backgroundColor: colors.White,
     marginBottom: CARD_MARGIN * 2,
   },
   cardImage: {
     width: '98%',
     height: verticalScale(240),
     borderWidth: 1,
-    borderColor: Colors.Black,
+    borderColor: colors.Black,
   },
   likeIcon: { position: 'absolute', top: 10, right: 10 },
   cardTitle: { fontSize: moderateScale(13), fontFamily: Fonts.Robotomedium },
   cardPrice: {
     fontSize: moderateScale(12),
     fontFamily: Fonts.Robotoregular,
-    color: Colors.Gray,
+    color: colors.Gray,
   },
   modalContainer: {
     flex: 1,
     justifyContent: 'flex-end',
     backgroundColor: 'rgba(0,0,0,0.2)',
   },
-  modalBox: { backgroundColor: Colors.White },
+  modalBox: { backgroundColor: colors.White },
   modalTitle: {
     fontSize: 16,
     fontFamily: Fonts.Robotomedium,
     marginBottom: 10,
   },
   optionRow: { paddingVertical: 12 },
-  applyBtn: { backgroundColor: Colors.Black, padding: 13, marginTop: 10 },
+  sortButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  applyBtn: { backgroundColor: colors.Black, padding: 13, marginTop: 10 },
   applyText: {
-    color: Colors.White,
+    color: colors.White,
     textAlign: 'center',
     fontFamily: Fonts.Robotomedium,
     fontSize: moderateScale(15),

@@ -2,9 +2,11 @@ import React, { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { useNavigation } from '@react-navigation/native';
-import { Colors } from '../theme/Colors';
+import { useAppColors } from '../helper/useAppColors';
 
 const Splash = () => {
+    const Colors = useAppColors();
+    const styles = useStyles(Colors);
   const navigation = useNavigation<any>();
 
 useEffect(() => {
@@ -13,14 +15,15 @@ useEffect(() => {
       index: 0, 
       routes: [{ name: 'BottomNavigation' }],
     });
-  }, 2000);
+  }, 1000);
 
   return () => clearTimeout(timer);
 }, []);
   return (
     <View style={styles.container}>
       <FastImage
-        source={require('../assets/Images/Gif/Zyatra.gif')}
+        source={{uri:"https://i.pinimg.com/originals/e4/d2/c1/e4d2c1d0da356797359acd9270bcdd77.gif"}}
+        // source={require('../assets/Images/Gif/Zyatra.gif')}
         style={styles.gif}
         resizeMode={FastImage.resizeMode.contain}
       />
@@ -30,7 +33,7 @@ useEffect(() => {
 
 export default Splash;
 
-const styles = StyleSheet.create({
+const useStyles = (Colors) => StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
@@ -38,7 +41,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.White,
   },
   gif: {
-    width: 200,
-    height: 200,
+    width: "100%",
+    height:"100%",
   },
 });

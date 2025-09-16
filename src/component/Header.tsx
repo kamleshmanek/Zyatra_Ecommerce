@@ -1,6 +1,7 @@
 import { StyleSheet, TouchableOpacity, View, Text, Animated } from 'react-native';
 import React, { useEffect, useRef } from 'react';
 import Zyatra from '../assets/Images/Svg/Zyatra.svg';
+import ZyatraWhite from '../assets/Images/Svg/ZyatraWhite.svg';
 import { Colors } from '../theme/Colors';
 import Feather from 'react-native-vector-icons/Feather';
 import { useNavigation } from '@react-navigation/native';
@@ -8,6 +9,7 @@ import { useSelector } from 'react-redux';
 import { Fonts } from '../assets/fonts/Fonts';
 import { moderateScale, scale, verticalScale } from '../theme/dimensions';
 import { isTablet } from '../helper/isTablet';
+import { useAppColors } from '../helper/useAppColors';
 
 type HeaderProps = {
   showBack?: boolean;
@@ -21,8 +23,11 @@ const Header: React.FC<HeaderProps> = ({
   showCart = true,
 }) => {
   const navigation = useNavigation<any>();
+    const Colors = useAppColors();
+    const styles = useStyles(Colors);
   const items  = useSelector((state: any) => state.Cart?.CartData);
   const count = items?.length || 0;
+  const mode = useSelector((state: any) => state.Theme?.mode || 'light');
 
 const scaleAnim = useRef(new Animated.Value(0)).current; 
 const opacityAnim = useRef(new Animated.Value(0)).current;
@@ -55,8 +60,9 @@ useEffect(() => {
       ) : (
         <View style={{ width:scale(25) }} />
       )}
-
-      <Zyatra />
+{
+  mode === 'dark' ? <ZyatraWhite /> : <Zyatra />
+}
 
       {showCart ? (
         <TouchableOpacity onPress={() => navigation.navigate('Cart')}>
@@ -78,7 +84,8 @@ useEffect(() => {
 
 export default Header;
 
-const styles = StyleSheet.create({
+
+const useStyles = (Colors) =>StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',

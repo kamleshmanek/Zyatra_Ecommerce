@@ -21,6 +21,7 @@ import {
 } from '../redux/slice/WishlistSlice';
 import { addToCart } from '../redux/slice/CartSlice';
 import { Txt } from '../assets/Txt';
+import { useAppColors } from '../helper/useAppColors';
 
 type RootStackParamList = {
   Home: undefined;
@@ -32,6 +33,8 @@ const { width } = Dimensions.get('window');
 const ITEM_WIDTH = (width - scale(40)) / 2;
 
 const Wishlist = () => {
+    const Colors = useAppColors();
+    const styles = useStyles(Colors);
   const dispatch = useDispatch();
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const wishlistItems = useSelector((state: any) => state.wishlist?.items);
@@ -163,7 +166,7 @@ const Wishlist = () => {
 
 export default Wishlist;
 
-const styles = StyleSheet.create({
+const useStyles = (Colors) =>StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.White,

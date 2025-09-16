@@ -6,11 +6,10 @@ import {
   TouchableOpacity,
   Dimensions,
   ScrollView,
-  ImageBackground,
 } from 'react-native';
 import React from 'react';
 import Header from '../component/Header';
-import { Colors } from '../theme/Colors';
+import { useAppColors } from '../helper/useAppColors';
 import CustomCarousel from '../component/CustomCarouse';
 import Loader from '../component/Loader';
 import { useDispatch, useSelector } from 'react-redux';
@@ -27,9 +26,10 @@ import { useNavigation } from '@react-navigation/native';
 import { GetCollectionApi } from '../redux/slice/CollectionSlice';
 import { Txt } from '../assets/Txt';
 
-const { width } = Dimensions.get('window');
+const SCREEN_WIDTH = Dimensions.get('window').width;
 
 const Home = () => {
+  const colors = useAppColors();
   const dispatch = useDispatch<any>();
   const navigation = useNavigation<any>();
   const { categories, loading, BrandData, Brandloading } = useSelector(
@@ -46,8 +46,10 @@ const Home = () => {
     navigation.navigate('Collection', { handle: categoryName });
   };
 
+  const styles = getStyles(colors);
+  
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: colors.White }]}>
       <Header />
       <ScrollView
         showsVerticalScrollIndicator={false}
@@ -109,7 +111,7 @@ const Home = () => {
                 }
               >
                 <Text style={styles.viewAllBtn}>{Txt.ViewAll}</Text>
-                <Feather name="chevron-right" size={16} color={Colors.Gray} />
+                <Feather name="chevron-right" size={16} color={colors.Gray} />
               </TouchableOpacity>
             </View>
 
@@ -157,7 +159,7 @@ const Home = () => {
                 }
               >
                 <Text style={styles.viewAllBtn}>{Txt.ViewAll}</Text>
-                <Feather name="chevron-right" size={16} color={Colors.Gray} />
+                <Feather name="chevron-right" size={16} color={colors.Gray} />
               </TouchableOpacity>
             </View>
 
@@ -191,10 +193,10 @@ const Home = () => {
 
 export default Home;
 
-const styles = StyleSheet.create({
+const getStyles = (colors: any) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.White,
+    backgroundColor: colors.White,
   },
 
   scrollContainer: {
@@ -216,11 +218,11 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: moderateScale(16),
     fontFamily: Fonts.Robotomedium,
-    color: Colors.Black,
+    color: colors.Black,
   },
 
   viewAllBtn: {
-    color: Colors.Gray,
+    color: colors.Gray,
     fontFamily: Fonts.Robotomedium,
     fontSize: moderateScale(13),
     marginRight: scale(4),
@@ -236,15 +238,15 @@ const styles = StyleSheet.create({
   carouselItemContainer: {
     flex: 1,
     overflow: 'hidden',
-    borderWidth: scale(1),
-    borderColor: Colors.LightGray,
+    // borderWidth: scale(1),
+    // borderColor: Colors.LightGray,
   },
 
   gifBanner: {
     flex: 1,
     overflow: 'hidden',
     borderWidth: scale(1),
-    borderColor: Colors.LightGray,
+    borderColor: colors.LightGray,
     height: verticalScale(230),
     marginTop: verticalScale(5),
   },
@@ -265,11 +267,11 @@ const styles = StyleSheet.create({
     height: scale(80),
     borderRadius: scale(40),
     borderWidth: 1,
-    borderColor: Colors.Gray,
+    borderColor: colors.Black,
     justifyContent: 'center',
     alignItems: 'center',
     overflow: 'hidden',
-    backgroundColor: Colors.White,
+    backgroundColor: colors.White,
     marginBottom: verticalScale(6),
   },
   categoryImage: {
@@ -278,7 +280,7 @@ const styles = StyleSheet.create({
   },
   categoryText: {
     fontSize: moderateScale(11),
-    color: Colors.Black,
+    color: colors.Black,
     textAlign: 'center',
     fontFamily: Fonts.Robotoregular,
     width: '100%',

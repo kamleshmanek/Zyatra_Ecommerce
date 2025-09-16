@@ -1,6 +1,6 @@
 import React from "react";
 import { Modal, View, ActivityIndicator, StyleSheet } from "react-native";
-import { Colors } from "../theme/Colors";
+import { useAppColors } from "../helper/useAppColors";
 
 interface LoaderProps {
   visible: boolean;
@@ -8,7 +8,7 @@ interface LoaderProps {
 }
 
 const Loader: React.FC<LoaderProps> = ({ visible, color }) => {
-
+  const Colors = useAppColors();
   return (
     <Modal
       visible={visible}

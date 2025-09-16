@@ -17,11 +17,14 @@ import {updateQty } from '../redux/slice/CartSlice';
 import { Txt } from '../assets/Txt';
 import CartItemCard from '../component/CartItemCard';
 import { useNavigation } from '@react-navigation/native';
+import { useAppColors } from '../helper/useAppColors';
 
 const Cart = () => {
   const CartData = useSelector((state: any) => state.Cart?.CartData);
   const dispatch = useDispatch<any>();
   const navigation = useNavigation<any>();
+    const Colors = useAppColors();
+    const styles = useStyles(Colors);
 
   const increaseQty = (item: any) => {
     dispatch(updateQty({ id: item?.id, qty: item?.qty + 1 }));
@@ -39,7 +42,7 @@ const Cart = () => {
   const subtotal = CartData.reduce((total: any, item: any) => {
     return total + item.price * (item?.qty || 0);
   }, 0);
-
+console.log("subtotal",subtotal)
   return (
     <View style={styles.container}>
       <Header showBack showCart={false} />
@@ -88,7 +91,7 @@ const Cart = () => {
         />
       )}
 
-      {Txt?.SubTotal > 0 && (
+      {subtotal > 0 && (
         <View style={styles.footer}>
           <View style={styles.subtotalRow}>
             <Text style={styles.subtotalValue}>{Txt?.SubTotal}</Text>
@@ -97,7 +100,7 @@ const Cart = () => {
           <Text style={styles.noteText}>(Total does not include shipping)</Text>
         </View>
       )}
-      {Txt?.SubTotal > 0 && (
+      {subtotal > 0 && (
         <TouchableOpacity style={styles.checkoutBtn}>
           <Text style={styles.checkoutText}>{Txt?.Checkout}</Text>
         </TouchableOpacity>
@@ -108,7 +111,8 @@ const Cart = () => {
 
 export default Cart;
 
-const styles = StyleSheet.create({
+
+const useStyles = (Colors) =>StyleSheet.create({
   container: { flex: 1, backgroundColor: Colors.White },
   headerRow: {
     flexDirection: 'row',

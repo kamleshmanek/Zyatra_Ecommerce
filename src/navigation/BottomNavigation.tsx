@@ -6,17 +6,22 @@ import Profile from '../screen/Profile';
 import Search from '../screen/Search';
 import Category from '../screen/Category';
 import Feather from "react-native-vector-icons/Feather";
-import { Colors } from '../theme/Colors';
 import { Fonts } from '../assets/fonts/Fonts';
 import { moderateScale } from '../theme/dimensions';
 import Wishlist from '../screen/Wishlist';
+import { useAppColors } from '../helper/useAppColors';
 
 const Tab = createBottomTabNavigator()
 
 const BottomNavigation = () => {
+    const Colors = useAppColors();
   return (
     <Tab.Navigator
+    
       screenOptions={({ route }) => ({
+        tabBarStyle: {
+          backgroundColor: Colors.White, // ✅ tab bar background
+        },
         headerShown: false,
         tabBarIcon: ({ color, size }) => {
           let iconName;

@@ -5,16 +5,25 @@ import {
   TouchableOpacity,
   Animated,
 } from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Header from '../component/Header';
-import { Colors } from '../theme/Colors';
 import { Fonts } from '../assets/fonts/Fonts';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import { Switch } from 'react-native-gesture-handler';
+import Clipboard from '@react-native-clipboard/clipboard';
 import { scale, verticalScale, moderateScale } from '../helper/scaling';
+import { useAppColors } from '../helper/useAppColors';
+import { toggleTheme } from '../redux/slice/ThemeSlice';
 
 const Profile = () => {
+  const [toggleSwitchNotification, setToggleSwitchNotification] = useState(false);
+  const dispatch = useDispatch();
+  const colors = useAppColors();
+    const Colors = useAppColors();
+    const styles = useStyles(Colors);
+  const themeMode = useSelector((state: any) => state.Theme?.mode || 'light');
   const scrollY = new Animated.Value(0);
   const headerHeight = scrollY.interpolate({
     inputRange: [0, 100],
@@ -46,9 +55,13 @@ const Profile = () => {
     { label: 'Wishlist', value: '12', icon: 'heart' },
   ];
 
+  const copyToClipboard = (text: string) => {
+    Clipboard.setString(text);
+  };
+  
   return (
     <View style={styles.container}>
-      <Header />
+      {/* <Header /> */}
 
       <Animated.View
         style={[styles.headerBackground, { height: headerHeight }]}
@@ -159,7 +172,7 @@ const Profile = () => {
                     <Text style={styles.infoLabel}>Member ID</Text>
                     <Text style={styles.infoValue}>STYLEHUB12345</Text>
                   </View>
-                  <TouchableOpacity style={styles.copyButton}>
+                  <TouchableOpacity onPress={() => copyToClipboard('STYLEHUB12345')} style={styles.copyButton}>
                     <Ionicons
                       name="copy-outline"
                       size={18}
@@ -168,7 +181,7 @@ const Profile = () => {
                   </TouchableOpacity>
                 </View>
               </View>
-              <View style={styles.infoCardGradient}>
+              {/* <View style={styles.infoCardGradient}>
                 <View style={styles.infoRow}>
                   <View style={styles.infoIconContainer}>
                     <Ionicons name="card" size={18} color={Colors.Black} />
@@ -177,7 +190,36 @@ const Profile = () => {
                     <Text style={styles.infoValue}>Notification</Text>
                   </View>
                   <View style={styles.copyButton}>
-                    <Switch />
+                    <Switch  trackColor={{ false: colors.Black, true: colors.Gray }} thumbColor={toggleSwitchNotification ? colors.White : colors.White} onValueChange={setToggleSwitchNotification}value={toggleSwitchNotification}/>
+                  </View>
+                </View>
+              </View> */}
+
+              <View style={[styles.infoCardGradient, { backgroundColor: colors.White }]}>
+                <View style={styles.infoRow}>
+                  <View style={[styles.infoIconContainer]}>
+                    <Ionicons 
+                      name={themeMode === 'dark' ? 'moon' : 'sunny'} 
+                      size={18} 
+                      color={colors.Black} 
+                    />
+                  </View>
+                  <View style={styles.infoText}>
+                    <Text style={[styles.infoValue, { color: colors.Black }]}>
+                      {themeMode === 'dark' ? 'Dark' : 'Light'} Theme
+                    </Text>
+                  </View>
+                  <View style={styles.copyButton}>
+                    <Switch
+                    
+                      trackColor={{ false: colors.LightGray, true: colors.white85 }}
+                      thumbColor={colors.Black}
+                      onValueChange={() => {
+                        dispatch(toggleTheme());
+                        return Promise.resolve();
+                      }}
+                      value={themeMode === 'dark'}
+                    />
                   </View>
                 </View>
               </View>
@@ -305,7 +347,7 @@ const Profile = () => {
 
 export default Profile;
 
-const styles = StyleSheet.create({
+const useStyles = (Colors) =>StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.White,
@@ -314,7 +356,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollContent: {
-    paddingTop: verticalScale(80),
+    paddingTop: verticalScale(100),
   },
   headerBackground: {
     position: 'absolute',
@@ -353,7 +395,7 @@ const styles = StyleSheet.create({
     width: scale(70),
     height: scale(70),
     borderRadius: scale(35),
-    backgroundColor: 'rgba(255, 255, 255, 0.15)',
+    backgroundColor: Colors.ProfileCircle,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: scale(15),
@@ -374,7 +416,7 @@ const styles = StyleSheet.create({
   },
   userEmail: {
     fontSize: moderateScale(14),
-    color: 'rgba(255, 255, 255, 0.85)',
+    color: Colors.white85,
     fontFamily: Fonts.Robotoregular,
   },
   statsContainer: {
@@ -388,19 +430,20 @@ const styles = StyleSheet.create({
     borderRadius: moderateScale(12),
     overflow: 'hidden',
     borderWidth: scale(1),
-    borderColor: Colors.Gray,
+    borderColor: Colors.black,
+    backgroundColor: Colors.white,
   },
   statCardGradient: {
     padding: moderateScale(15),
     alignItems: 'center',
     borderRadius: moderateScale(12),
-    backgroundColor: '#ffffff',
+    backgroundColor:Colors.white,
   },
   statIcon: {
     width: scale(40),
     height: scale(40),
     borderRadius: scale(20),
-    backgroundColor: 'rgba(44, 62, 80, 0.1)',
+    backgroundColor:Colors.Semantic,
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: verticalScale(8),
@@ -408,23 +451,17 @@ const styles = StyleSheet.create({
   statValue: {
     fontSize: moderateScale(18),
     fontFamily: Fonts.Robotobold,
-    color: '#2c3e50',
+    color: Colors.Black,
     marginBottom: verticalScale(2),
   },
   statLabel: {
     fontSize: moderateScale(12),
-    color: Colors.Gray,
+    color: Colors.Black,
     fontFamily: Fonts.Robotoregular,
   },
   sectionContainer: {
     paddingHorizontal: scale(20),
     marginTop: verticalScale(10),
-  },
-  sectionTitle: {
-    fontSize: moderateScale(16),
-    fontFamily: Fonts.Robotomedium,
-    color: '#2c3e50',
-    marginBottom: verticalScale(12),
   },
   infoCard: {
     borderRadius: moderateScale(12),
@@ -448,7 +485,7 @@ const styles = StyleSheet.create({
     width: scale(36),
     height: scale(36),
     borderRadius: scale(18),
-    backgroundColor: 'rgba(44, 62, 80, 0.1)',
+    backgroundColor:Colors.Semantic,
     justifyContent: 'center',
     alignItems: 'center',
   },
