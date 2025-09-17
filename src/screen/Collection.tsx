@@ -21,7 +21,7 @@ import { Txt } from '../assets/Txt';
 import { addToWishlist } from '../redux/slice/WishlistSlice';
 
 const { width } = Dimensions.get('window');
-const CARD_MARGIN = scale(10);
+const CARD_MARGIN = scale(6);
 const CARD_WIDTH = width / 2 - CARD_MARGIN * 1.3;
 
 const Collection = () => {

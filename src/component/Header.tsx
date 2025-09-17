@@ -15,12 +15,14 @@ type HeaderProps = {
   showBack?: boolean;
   onBack?: () => void;
   showCart?: boolean;
+  title?: string;
 };
 
 const Header: React.FC<HeaderProps> = ({
   showBack = false,
   onBack,
   showCart = true,
+  title
 }) => {
   const navigation = useNavigation<any>();
     const Colors = useAppColors();
@@ -60,9 +62,13 @@ useEffect(() => {
       ) : (
         <View style={{ width:scale(25) }} />
       )}
-{
-  mode === 'dark' ? <ZyatraWhite /> : <Zyatra />
-}
+      {title ? (
+        <Text style={{ fontFamily: Fonts.Robotobold, fontSize: moderateScale(20), color: Colors.Black }}>
+          {title}
+        </Text>
+      ) :mode === 'dark' ? <ZyatraWhite /> : <Zyatra />}
+      
+
 
       {showCart ? (
         <TouchableOpacity onPress={() => navigation.navigate('Cart')}>

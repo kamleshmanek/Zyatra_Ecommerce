@@ -30,7 +30,9 @@ export const Colors = {
     Amber: '#FFB300FF',
     ProfileCircle:'#FFFFFF26',
     white85:'#FFFFFFD9',
-    Semantic:'#2C3E501A'
+    Semantic:'#2C3E501A',
+    GrayDot:"lightgray"
+
   },
   dark: {
     White: '#363636',
@@ -43,6 +45,7 @@ export const Colors = {
     Amber: '#FFB300FF',
     ProfileCircle:'#00000026',
     white85:'#000000D9',
-    Semantic:'#ECF0F11A'
+    Semantic:'#ECF0F11A',
+    GrayDot:"#000000"
   },
 };

@@ -13,6 +13,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Login from '../screen/Login';
 import { useAppColors } from '../helper/useAppColors';
 import ForgotPassword from '../screen/ForgotPassword';
+import Signup from '../screen/Signup';
+import WebViewScreen from '../screen/WebViewScreen';
+import Address from '../screen/Address';
+import AddEditAddress from '../screen/AddEditAddress';
 
 const MainNavigation = () => {
   const Colors = useAppColors();
@@ -45,8 +49,8 @@ const MainNavigation = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown: false}} 
-      initialRouteName={"Login"}
-      // initialRouteName={firstLaunch && !loading?'Boarding':'Splash'}
+      // initialRouteName={"ForgotPassword"}
+      initialRouteName={firstLaunch && !loading?'Boarding':'Splash'}
       >
         <Stack.Screen name="Splash" component={Splash} />
         <Stack.Screen name="BottomNavigation" component={BottomNavigation} />
@@ -56,6 +60,10 @@ const MainNavigation = () => {
         <Stack.Screen name="Boarding" component={Boarding} />
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
+        <Stack.Screen name="Signup" component={Signup} />
+        <Stack.Screen name="WebViewScreen" component={WebViewScreen} />
+        <Stack.Screen name="Address" component={Address} />
+        <Stack.Screen name="AddEditAddress" component={AddEditAddress} />
       </Stack.Navigator>
     </NavigationContainer>
   )

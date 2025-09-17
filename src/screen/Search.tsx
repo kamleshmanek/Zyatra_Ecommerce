@@ -20,7 +20,7 @@ import ProductCard from '../component/ProductCard';
 import { Txt } from '../assets/Txt';
 import { useAppColors } from '../helper/useAppColors';
 
-const CARD_MARGIN = scale(10);
+const CARD_MARGIN = scale(6);
 const Search = () => {
   const Colors = useAppColors();
   const styles = useStyles(Colors);

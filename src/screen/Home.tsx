@@ -25,13 +25,17 @@ import Feather from 'react-native-vector-icons/Feather';
 import { useNavigation } from '@react-navigation/native';
 import { GetCollectionApi } from '../redux/slice/CollectionSlice';
 import { Txt } from '../assets/Txt';
-
-const SCREEN_WIDTH = Dimensions.get('window').width;
+import Carousel, {
+  ICarouselInstance,
+  Pagination,
+} from 'react-native-reanimated-carousel';
+import { useSharedValue } from 'react-native-reanimated';
 
 const Home = () => {
   const colors = useAppColors();
   const dispatch = useDispatch<any>();
   const navigation = useNavigation<any>();
+  const { width, height } = Dimensions.get('window');
   const { categories, loading, BrandData, Brandloading } = useSelector(
     (state: any) => state.home,
   );
@@ -41,13 +45,23 @@ const Home = () => {
   const beautyData = categories?.beauty?.products || [];
   const womensBagsData = categories?.womensbag?.products || [];
 
+  const ref = React.useRef<ICarouselInstance>(null);
+  const progress = useSharedValue<number>(0);
+
+  const onPressPagination = (index: number) => {
+    ref.current?.scrollTo({
+      count: index - progress.value,
+      animated: true,
+    });
+  };
+
   const handleTopCategoryPress = (categoryName: string) => {
     dispatch(GetCollectionApi(categoryName));
     navigation.navigate('Collection', { handle: categoryName });
   };
 
   const styles = getStyles(colors);
-  
+
   return (
     <View style={[styles.container, { backgroundColor: colors.White }]}>
       <Header />
@@ -57,8 +71,8 @@ const Home = () => {
       >
         <Loader visible={loading || Brandloading} />
 
-        <View >
-          <CustomCarousel
+        <View style={{ marginTop: verticalScale(-20) }}>
+          {/* <CustomCarousel
             data={carouselData}
             height={verticalScale(230)}
             autoplay
@@ -68,6 +82,35 @@ const Home = () => {
                 <FastImageBanner uri={item.uri} />
               </View>
             )}
+          /> */}
+
+          <Carousel
+            ref={ref}
+            autoPlayInterval={3000}
+            pagingEnabled={true}
+            width={width}
+            height={verticalScale(250)}
+            data={carouselData}
+            autoPlay={true}
+            mode={'parallax'}
+            onProgressChange={(_, absoluteProgress) => {
+              progress.value = absoluteProgress;
+            }}
+            renderItem={({ item, index }) => (
+              <View style={styles.carouselItemContainer}>
+                <FastImageBanner uri={item.uri} />
+              </View>
+            )}
+          />
+
+          <Pagination.Custom
+            activeDotStyle={{ backgroundColor: colors.Black }}
+            progress={progress}
+            data={carouselData}
+            dotStyle={{ backgroundColor: colors.GrayDot }}
+            containerStyle={{ gap: 6, marginTop: -15 }}
+            onPress={onPressPagination}
+            size={10}
           />
         </View>
 
@@ -193,96 +236,97 @@ const Home = () => {
 
 export default Home;
 
-const getStyles = (colors: any) => StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.White,
-  },
+const getStyles = (colors: any) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors.White,
+    },
 
-  scrollContainer: {
-    flex: 1,
-  },
+    scrollContainer: {
+      flex: 1,
+    },
 
-  sectionWrapper: {
-    marginHorizontal: scale(10),
-    marginTop: verticalScale(20),
-  },
+    sectionWrapper: {
+      marginHorizontal: scale(10),
+      marginTop: verticalScale(20),
+    },
 
-  headerRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: verticalScale(10),
-  },
+    headerRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: verticalScale(10),
+    },
 
-  sectionTitle: {
-    fontSize: moderateScale(16),
-    fontFamily: Fonts.Robotomedium,
-    color: colors.Black,
-  },
+    sectionTitle: {
+      fontSize: moderateScale(16),
+      fontFamily: Fonts.Robotomedium,
+      color: colors.Black,
+    },
 
-  viewAllBtn: {
-    color: colors.Gray,
-    fontFamily: Fonts.Robotomedium,
-    fontSize: moderateScale(13),
-    marginRight: scale(4),
-  },
-  viewAllWrapper: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  carouselWrapper: {
-    marginTop: verticalScale(10),
-  },
+    viewAllBtn: {
+      color: colors.Gray,
+      fontFamily: Fonts.Robotomedium,
+      fontSize: moderateScale(13),
+      marginRight: scale(4),
+    },
+    viewAllWrapper: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    carouselWrapper: {
+      marginTop: verticalScale(10),
+    },
 
-  carouselItemContainer: {
-    flex: 1,
-    overflow: 'hidden',
-    // borderWidth: scale(1),
-    // borderColor: Colors.LightGray,
-  },
+    carouselItemContainer: {
+      flex: 1,
+      overflow: 'hidden',
+      // borderWidth: scale(1),
+      // borderColor: Colors.LightGray,
+    },
 
-  gifBanner: {
-    flex: 1,
-    overflow: 'hidden',
-    borderWidth: scale(1),
-    borderColor: colors.LightGray,
-    height: verticalScale(230),
-    marginTop: verticalScale(5),
-  },
-  flatListBackground: {
-    width: '100%',
-    // marginTop: 10,
-    borderRadius: 8,
-    flex: 1,
-  },
+    gifBanner: {
+      flex: 1,
+      overflow: 'hidden',
+      borderWidth: scale(1),
+      borderColor: colors.LightGray,
+      height: verticalScale(230),
+      marginTop: verticalScale(5),
+    },
+    flatListBackground: {
+      width: '100%',
+      // marginTop: 10,
+      borderRadius: 8,
+      flex: 1,
+    },
 
-  categoryWrapper: {
-    width: scale(90),
-    alignItems: 'center',
-    marginRight: scale(12),
-  },
-  imageWrapper: {
-    width: scale(80),
-    height: scale(80),
-    borderRadius: scale(40),
-    borderWidth: 1,
-    borderColor: colors.Black,
-    justifyContent: 'center',
-    alignItems: 'center',
-    overflow: 'hidden',
-    backgroundColor: colors.White,
-    marginBottom: verticalScale(6),
-  },
-  categoryImage: {
-    width: '100%',
-    height: '100%',
-  },
-  categoryText: {
-    fontSize: moderateScale(11),
-    color: colors.Black,
-    textAlign: 'center',
-    fontFamily: Fonts.Robotoregular,
-    width: '100%',
-  },
-});
+    categoryWrapper: {
+      width: scale(90),
+      alignItems: 'center',
+      marginRight: scale(12),
+    },
+    imageWrapper: {
+      width: scale(80),
+      height: scale(80),
+      borderRadius: scale(40),
+      borderWidth: 1,
+      borderColor: colors.Black,
+      justifyContent: 'center',
+      alignItems: 'center',
+      overflow: 'hidden',
+      backgroundColor: colors.White,
+      marginBottom: verticalScale(6),
+    },
+    categoryImage: {
+      width: '100%',
+      height: '100%',
+    },
+    categoryText: {
+      fontSize: moderateScale(11),
+      color: colors.Black,
+      textAlign: 'center',
+      fontFamily: Fonts.Robotoregular,
+      width: '100%',
+    },
+  });

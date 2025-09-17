@@ -18,7 +18,7 @@ import { useAppColors } from '../helper/useAppColors';
 
 const { width } = Dimensions.get('window');
 const CARD_MARGIN = scale(10);
-const CARD_WIDTH = width / 2 - CARD_MARGIN * 1.3;
+const CARD_WIDTH = width / 2 - CARD_MARGIN * 1;
 
 interface ProductCardProps {
   item: any;
@@ -38,9 +38,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
   return (
     <View style={styles.card}>
-      {/* Image Slider */}
 
-      {/* <TouchableOpacity onPress={() => navigation.navigate('Product',{productId:item.id})}> */}
       <View style={{ borderWidth: 1, borderColor: Colors.Black }}>
         {item.images && item.images.length > 0 ? (
           <View>
